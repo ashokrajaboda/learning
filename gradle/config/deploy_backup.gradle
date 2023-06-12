@@ -1,0 +1,126 @@
+subprojects {
+    ext {
+        isReleaseVersion = !(rootProject.projectVersion =~ /-SNAPSHOT$/)
+        isNeedSign = needReleaseSign && isReleaseVersion
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        archiveClassifier.set('sources')
+    }
+
+    task javadocJar(type: Jar) {
+        from javadoc
+        archiveClassifier.set('javadoc')
+    }
+
+    publishing {
+        publications {
+            pluginMaven(MavenPublication) {
+                groupId groupId
+                artifactId artifactId
+                version version
+                from components.java
+                artifact sourcesJar
+                artifact bootJar
+                artifact javadocJar
+
+                pom {
+                    name = 'Spring Boot Starter'
+                    description = 'Spring Boot Starter'
+                    url = 'https://github.com/yidongnan/grpc-spring-boot-starter'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'http://www.opensource.org/licenses/mit-license.php'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'ashokraja'
+                            name = 'Ashok Raja'
+                            email = 'virushacker989@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/ashokrajaboda/hospital.git'
+                        developerConnection = 'scm:git:ssh@github.com:ashokrajaboda/hospital.git'
+                        url = 'https://github.com/ashokrajaboda/hospital'
+                    }
+                }
+
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+
+
+            }
+        }
+        repositories {
+            maven {
+                /*
+        credentials {
+            username System.getenv('MAVEN_REPO_USER')
+            password System.getenv('MAVEN_REPO__PASS')
+        }
+         */
+                if (project.ext.isReleaseVersion) {
+                    //url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                    url 'file:/Users/ashokrajaboda/Documents/Projects/repository/release'
+                } else {
+                    //url "https://oss.sonatype.org/content/repositories/snapshots"
+                    url 'file:/Users/ashokrajaboda/Documents/Projects/repository/snapshot'
+                }
+            }
+        }
+/*
+    tasks.withType(Sign) {
+        onlyIf { project.ext.isNeedSign }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
+    }
+*/
+        javadoc {
+            if (JavaVersion.current().isJava9Compatible()) {
+                options.addBooleanOption('html5', true)
+            }
+        }
+    }
+    tasks {
+        afterReleaseBuild {
+            dependsOn publish
+        }
+    }
+
+    release {
+        //pushReleaseVersionBranch = project.ext.pushReleaseVersionBranch
+        //buildTasks = []
+        //failOnCommitNeeded = false
+        //versionPropertyFile = '../gradle.properties'
+        git {
+            requireBranch = 'main'
+            pushToRemote = 'origin'
+            //commitVersionFileOnly = false
+            //signTag = false
+        }
+    }
+
+    tasks {
+        afterReleaseBuild {
+            dependsOn publish
+        }
+    }
+}
+
+
+
+

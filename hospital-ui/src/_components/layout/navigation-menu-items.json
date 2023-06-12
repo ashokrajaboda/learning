@@ -1,0 +1,88 @@
+[
+    {
+        title: 'Home',
+        url: '/',
+        enabled: true,
+        topLevel: true,
+        icon: 'home'
+    },
+    {
+        title: 'Products',
+        enabled: true,
+        icon: 'tags',
+        subMenuItems: [
+            {
+                title: 'Identity',
+                url: '/identity',
+                enabled: true,
+                icon: 'play'
+            },
+            {
+                title: 'Payment',
+                url: '/payment',
+                enabled: true,
+                icon: 'play'
+            },
+            {
+                title: 'Mobile App Scaffold',
+                url: '/react-native-mobile-app-scaffold',
+                enabled: true,
+                icon: 'play'
+            },
+            {
+                title: 'React App Scaffold',
+                url: '/react-web-app-scaffold',
+                enabled: true,
+                icon: 'play'
+            },
+            {
+                title: 'C#.Net API Scaffold',
+                url: '/c-sharp-net-api-scaffold',
+                enabled: true,
+                icon: 'play'
+            }
+        ]
+    },
+    {
+        title: 'Pricing',
+        url: '/registration',
+        enabled: true,
+        topLevel: true,
+        icon: 'tags'
+    },
+    {
+        title: 'Documentation',
+        enabled: false,
+        icon: 'link',
+        subMenuItems: [
+            {
+                title: 'Getting Started',
+                url: '/integration/getting-started',
+                enabled: true,
+                icon: 'play'
+            }
+        ]
+    },
+    {
+        title: 'Blog',
+        enabled: true,
+        topLevel: true,
+        icon: 'blog',
+        url: '/blog/list'
+    },
+
+    {
+        title: 'Contact Us',
+        url: '/contact-us',
+        enabled: true,
+        topLevel: true,
+        icon: 'phone'
+    },
+    {
+        title: 'About Us',
+        url: '/about-us',
+        enabled: true,
+        topLevel: true,
+        icon: 'users'
+    }
+]

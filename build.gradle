@@ -1,0 +1,119 @@
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+buildscript {
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            name "gradle-plugins"
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+
+    ext {
+        springBootVersion = "3.0.4"
+        springBootAdminVersion = "3.0.0-M4"
+        springCloudVersion = "2022.0.1"
+        springDependencyManagementVersion = "1.1.0"
+        sonarqubeVersion = "4.0.0.2929"
+        versioningPluginVersion = '3.0.0'
+        researchGateReleaseVersion = '3.0.2'
+        projectVersion = version
+    }
+
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
+    }
+}
+
+plugins {
+    id 'base'
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'org.sonarqube' version "${sonarqubeVersion}"
+    id 'net.researchgate.release' version '3.0.2'
+    id 'net.nemerosa.versioning' version "${versioningPluginVersion}"
+}
+
+// If you attempt to build without the `--scan` parameter in `gradle 6.0+` it will cause a build error that it can't find
+// a buildScan property to change. This avoids that problem.
+/*
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+*/
+wrapper {
+    // Update using:
+    // ./gradlew wrapper --gradle-version=7.4 --distribution-type=bin
+    gradleVersion = '7.6'
+}
+
+def buildTimeAndDate = ZonedDateTime.now(ZoneOffset.UTC)
+
+ext {
+    buildDateTime = buildTimeAndDate.format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+    buildDate = DateTimeFormatter.ISO_DATE.format(buildTimeAndDate)
+    buildTime = DateTimeFormatter.ofPattern('HH:mm:ss.SSS Z').format(buildTimeAndDate)
+    buildRevision = versioning.info.commit
+    set('springBootAdminVersion', "3.0.0-M4")
+    set('springCloudVersion', "2022.0.1")
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    group = 'com.gagana.hospital-parent'
+    version = rootProject.projectVersion
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        options.encoding = 'UTF-8'
+    }
+
+    compileJava.options*.compilerArgs = [
+            '-Xlint:all', '-Xlint:-processing'
+    ]
+    // Copy LICENSE
+    tasks.withType(Jar) {
+        from(project.rootDir) {
+            include 'LICENSE'
+            into 'META-INF'
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            name "gradle-plugins"
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'minutes'
+    }
+    jar {
+        enabled = true
+    }
+}
+
+apply from: "gradle/config/spring-config.gradle"
+apply from: "gradle/config/sonar-config.gradle"
+//apply from: "gradle/config/deploy.gradle"

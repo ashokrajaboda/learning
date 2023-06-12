@@ -1,0 +1,33 @@
+plugins {
+    // You have to specify the plugin version, for instance
+    id("com.github.node-gradle.node") version "3.5.1"
+    // This works as is here because we use the plugin source
+    //id("com.github.node-gradle.node")
+}
+
+node {
+    version = "19.3.0"
+    download = false
+}
+
+
+task appNpmBuild(type: NpmTask) {
+    args = ["run", "build"]
+}
+
+assemble.dependsOn(appNpmBuild)
+
+task webjar(type: Jar) {
+    from(fileTree('build')) {
+        into 'META-INF/resources'
+    }
+}
+
+task npmTest(type: NpmTask) {
+    environment = ['CI': 'true']
+    args = ['run', 'test']
+}
+
+//check.dependsOn(npmTest)
+jar.dependsOn(appNpmBuild)
+jar.finalizedBy('webjar')

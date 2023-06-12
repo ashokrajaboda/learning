@@ -1,4 +1,3 @@
-# hospital
 SQL-based migrations are typically used for
 
 DDL changes (CREATE/ALTER/DROP statements for TABLES,VIEWS,TRIGGERS,SEQUENCES,…)
@@ -32,27 +31,3 @@ Version: Version with dots or underscores separate as many parts as you like (No
 Separator: __ (two underscores) (configurable)
 Description: Underscores or spaces separate the words
 Suffix: .sql (configurable)
-
-Postgresql:
-Terminal Command:
-psql postgres
-List of Roles:
-/du
-
-gaganspvt/Raja@pgh535
-
-postgres=# create database hospital_db;
-CREATE DATABASE
-postgres=# create user admin with encrypted password 'admin';
-CREATE ROLE
-postgres=# grant all privileges on database hospital_db to admin;
-GRANT
-
-postgres=# create schema hospital_schema;
-CREATE SCHEMA
-postgres=# create user hospitaladmin with encrypted password 'Gagans.@123';
-CREATE ROLE
-postgres=# alter default privileges for role hospitaladmin in schema  hospital_schema grant select, insert, update, delete on tables to hospitaladmin;
-ALTER DEFAULT PRIVILEGES
-
-

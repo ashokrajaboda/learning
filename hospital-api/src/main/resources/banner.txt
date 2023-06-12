@@ -1,0 +1,19 @@
+
+
+              |\      _,,,--,,_
+             /,`.-'`'   ._  \-;;,_
+  _______ __|,4-  ) )_   .;.(__`'-'__     ___ __    _ ___ _______
+ |       | '---''(_/._)-'(_\_)   |   |   |   |  |  | |   |       |
+ _________                                                ________        _____
+__  ____/______ ________ _______ ________ ______ _       __  ___/___________(_)
+_  / __  _  __ `/__  __ `/_  __ `/__  __ \_  __ `/       _____ \ __  ___/__  /
+/ /_/ /  / /_/ / _  /_/ / / /_/ / _  / / // /_/ /        ____/ / _  /    _  /
+\____/   \__,_/  _\__, /  \__,_/  /_/ /_/ \__,_/         /____/  /_/     /_/
+                 /____/
+
+Application Name: ${application.title}
+Application Version: ${application.version}
+:: Built with Spring Boot :: ${spring-boot.version}
+${AnsiColor.RED} :: Spring Boot${spring-boot.formatted-version} :: ${AnsiColor.RED}
+${AnsiColor.DEFAULT}
+

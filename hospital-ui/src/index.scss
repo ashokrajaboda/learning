@@ -1,0 +1,24 @@
+@import "./styles/bootstrap-imports.scss";
+
+/*
+@font-face {
+    font-family: 'Lato';
+    font-weight: 900;
+    src: local('Lato'), url(./styles/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Open_Sans';
+    font-weight: 900;
+    src: local('Open_Sans'), url(./styles/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf) format('truetype');
+}
+*/
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue','Open Sans',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

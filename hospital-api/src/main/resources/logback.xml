@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty scope="context" name="CONSOLE_PATTERN" source="application.console-pattern"/>
+    <property name="LOG_DIR" value="./logs" />
+    <property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS z} [${PID:- }] [%15.15t] %-5level %highlight([%36.36(%X{X-Session-Id:-NA})] [%36.36(%X{X-Txn-Id:-NA})]) %-40.40logger{39} : %msg%n"/>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--
+            %d{yyyy-MM-dd HH:mm:ss SSSSSSSSS z} [%thread] %-5level %logger{36} - %msg%n
+            %d{yyyy-MM-dd HH:mm:ss.SSS z} [${PID:- }] [%thread] %-5level %highlight([%X{x-session-id}] [%X{x-request-id}]) %logger{20} - %msg%n
+
+            -->
+            <pattern>
+                ${CUSTOM_LOG_PATTERN}
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="reactor" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="io.netty" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.springframework.web.reactive" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="ch.qos.logback" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.gagana.hospital" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

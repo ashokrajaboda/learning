@@ -1,0 +1,24 @@
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "BRMAMGLS Projects"
+        property "sonar.projectKey", "com.brmamls:brmamls:brmamls"
+        property "sonar.verbose", "true"
+        property "sonar.findBugs.excludeFilters",""
+        property "sonar.java.coveragePlugin", "jacoco"
+    }
+}
+/*
+project(":list") {
+    sonarqube {
+        //skipProject = true
+    }
+}
+
+project(":utilities") {
+    sonarqube {
+        //skipProject = true
+    }
+}
+*/

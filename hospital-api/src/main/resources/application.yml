@@ -1,0 +1,119 @@
+server:
+  port: ${hospital.api.port:8082}
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: hospital-api
+  web-flux:
+    base-path: /api
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: hospital
+application:
+  cors: http://localhost:${hospital.api.port}/api
+  security:
+    encryptor:
+      passphrase: G@g@n@&K@rth1k@2o21 # https://asecuritysite.com/encryption/keygen --aes-256-cfb8:
+      salt: 0F2C551CF53EE869
+      key: D2B746E5289B7D42FF07DB61D320F856C1BD2114946FE2054664E59F4CC9050F
+      iv: B03A64DAC6366CCE06495279F9247C4E
+    securityEncode: ARGON2
+    saltLength: 32
+    tokenEncryptor:
+      passphrase: G@g@n@&Ri2o21
+      salt: 557E42EDF5608429
+      key: 4D9A7A0E343549292A7B19212B2D3AA2E67A5A2B827B4CE51A9A94285B52491B
+      iv: 4C1A5DA2A2B20B6836BC71FAAE2A08F2
+    tokenRefresh: 0F05D3ABDCAAC225
+    authWhiteList:
+      - "/**"
+      - "/v2/api-docs"
+      - "/swagger-resources"
+      - "/swagger-resources/**"
+      - "/configuration/ui"
+      - "/configuration/security"
+      - "/swagger-ui.html"
+      - "/webjars/**"
+      # -- Swagger UI v3 (OpenAPI)
+      - "/v3/api-docs/**"
+      - "/swagger-ui/**"
+      - "/health/**"
+      # other public endpoints of your API may be appended to this array
+      - "/webjars/**"
+      - "/authorize/**"
+      - "/favicon.ico"
+      - "/actuator"
+      - "/actuator/**"
+      - "/dashboard/test**"
+      - "/webflux/test**"
+      - "/user/**"
+  database:
+    r2dbc:
+      driver: pool
+      protocol: postgresql
+      host: localhost
+      port: 5432
+      database: hospital_db
+      user: hospital_admin
+      #encrypted: false
+      #password: T0gether
+      password: a09da240c76a9a63c2397182d00d91b4013fa959caffb1c42c9b702761cd9f748f98ef121cf5813e
+      connectTimeoutInSeconds: 300
+      pooling:
+        initialSize: 5
+        maxSize: 30
+        maxIdleTimeInMinutes: 10
+      options:
+        schema: hospital
+        currentSchema: hospital
+  migration:
+    flyway:
+      url: jdbc:postgresql://localhost:5432/hospital_db
+      user: admin
+      #password: Gagana.@123
+      password: 849e690938267a846021607a41f6ec887bc925ae072b8ce569d41268493e809f066c7033c808c44461a297
+      enabled: true
+      #schemas: migrate_flyway
+      defaultSchema: migrate_flyway
+      locations: classpath:db/migration/postgres
+  error-properties:
+    includeException: true
+    includeStacktrace: NEVER
+    includeMessage: ALWAYS
+    includeBindingErrors: ALWAYS
+logging:
+  level:
+    com:
+      gagana:
+        hospital:
+          api: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+      group:
+        custom:
+          show-components: always
+          show-details: always
+  health:
+    ping:
+      enabled: true
+    r2dbc:
+      enabled: true
+    db:
+      enabled: true
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    csrf:
+      enabled: true

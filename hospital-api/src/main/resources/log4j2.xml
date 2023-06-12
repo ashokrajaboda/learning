@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- No need to set system property "Log4jContextSelector" to any value
+     when using <asyncLogger> or <asyncRoot>. -->
+
+<Configuration status="DEBUG">
+    <Properties>
+        <Property name="LOG_DIR">./logs</Property>
+        <Property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS Z} [${PID:- }] [%15.15t] %-5level %highlight([%36.36(%X{X-Session-Id:-NA})] [%36.36(%X{X-Txn-Id:-NA})]) %-40.40logger{39} : %msg%n"/>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="${CUSTOM_LOG_PATTERN}" />
+        </Console>
+        <!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
+        <RandomAccessFile name="RandomAccessFile" fileName="${LOG_DIR}/asyncHospitalApi.log"
+                          immediateFlush="false" append="false">
+            <PatternLayout disableAnsi="false" pattern="${CUSTOM_LOG_PATTERN}" />
+            <!--
+            <PatternLayout>
+                <Pattern>%d %p %class{1.} [%t] %location %m %ex%n</Pattern>
+            </PatternLayout>
+            -->
+        </RandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <!-- pattern layout actually uses location, so we need to include it -->
+        <AsyncLogger name="com.gagana.hospital.api" level="trace" includeLocation="true">
+            <AppenderRef ref="RandomAccessFile"/>
+        </AsyncLogger>
+        <Root level="info" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RandomAccessFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
